@@ -117,7 +117,6 @@ static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 /* for pcsc_stringify_error */
 static char g_error_str[512];
 
-int global_readers = 0;
 
 /*****************************************************************************/
 /* produce a hex dump */
@@ -1355,8 +1354,7 @@ SCardListReaders(SCARDCONTEXT hContext, LPCSTR mszGroups, LPSTR mszReaders,
     offset = 0;
     llen = GET_UINT32(msg, offset);
     offset += 4;
-    num_readers = global_readers;
-    //num_readers = GET_UINT32(msg, offset);
+    num_readers = GET_UINT32(msg, offset);
     offset += 4;
     LLOGLN(0, ("SCardListReaders: mszReaders %p pcchReaders %p num_readers %d llen %d",
                 mszReaders, pcchReaders, num_readers, llen));
@@ -1395,10 +1393,6 @@ SCardListReaders(SCARDCONTEXT hContext, LPCSTR mszGroups, LPSTR mszReaders,
     LLOGLN(0, ("SCardListReaders END: mszReaders %p pcchReaders %p num_readers %d reader_names_index %d",
             mszReaders, pcchReaders, num_readers, reader_names_index));
 
-
-    if (llen > 1) {
-        global_readers++;
-    }
 
     if (mszReaders == 0)
     {
