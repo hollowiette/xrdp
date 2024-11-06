@@ -1,0 +1,12 @@
+[Unit]
+Description=xrdp daemon
+Documentation=man:xrdp(8) man:xrdp.ini(5)
+Requires=xrdp-sesman.service
+After=xrdp-sesman.service
+
+[Service]
+EnvironmentFile=@sysconfdir@/sysconfig/xrdp
+ExecStart=@sbindir@/xrdp $XRDP_OPTIONS --nodaemon
+
+[Install]
+WantedBy=multi-user.target
